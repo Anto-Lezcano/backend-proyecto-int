@@ -1,6 +1,6 @@
 import { OmitType } from "@nestjs/mapped-types";
 import { IsNotEmpty, Length } from "class-validator";
-import { ForgotPasswordDto } from "./forgot-password";
+import { ForgotPasswordDto } from "../../users/dto/forgot-password-dto";
 
 export class codeVerificationDto extends OmitType(ForgotPasswordDto, [
   "password",

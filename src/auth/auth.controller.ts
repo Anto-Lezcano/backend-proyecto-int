@@ -1,11 +1,7 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
   Res,
   UnauthorizedException,
 } from "@nestjs/common";
@@ -139,10 +135,5 @@ export class AuthController {
   @Post("resend-verification-email")
   async resendVerification(@Body("email") email: string) {
     return await this.authService.resendVerificationEmail(email);
-  }
-
-  @Get("all")
-  getAll() {
-    return this.authService.getAll();
   }
 }

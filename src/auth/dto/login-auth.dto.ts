@@ -3,7 +3,7 @@ import { RegisterAuthDto } from "./register-auth.dto";
 
 export class LoginAuthDto extends OmitType(RegisterAuthDto, [
   "dni",
-  "firstname",
-  "lastname",
+  "firstName",
+  "lastName",
   "role",
 ] as const) {}

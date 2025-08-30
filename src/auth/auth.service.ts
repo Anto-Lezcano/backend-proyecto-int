@@ -5,11 +5,8 @@ import {
 } from "@nestjs/common";
 import { RegisterAuthDto } from "./dto/register-auth.dto";
 import { LoginAuthDto } from "./dto/login-auth.dto";
-import { ForgotPasswordDto } from "./dto/forgot-password";
-import { UpdatePasswordDto } from "./dto/forgot-password";
 import { CompleteGoogleRegistrationDto } from "./dto/complete-google-registration.dto";
 import { codeVerificationDto } from "./dto/code.verification.dto";
-import { JwtStrategy } from "src/common/jwt/jwt.service";
 import { FirebaseAdminService } from "src/firebase/firebase.service";
 import { PrismaService } from "src/prisma/prisma.service";
 import { EmailService } from "src/common/email/email.service";
@@ -27,6 +24,7 @@ export class AuthService {
     private emailServ: EmailService
   ) {}
 
+  //REGISTRAR USUARIO
   async register(registerDto: RegisterAuthDto) {
     const existUsu = await this.prisma.user.findUnique({
       where: { email: registerDto.email },
@@ -44,8 +42,8 @@ export class AuthService {
 
     const createdUser = await this.prisma.user.create({
       data: {
-        firstName: registerDto.firstname,
-        lastName: registerDto.lastname,
+        firstName: registerDto.firstName,
+        lastName: registerDto.lastName,
         email: registerDto.email,
         password: hashedPassword,
         role: (registerDto.role as Role) || Role.student,
@@ -67,6 +65,8 @@ export class AuthService {
       userId: createdUser.id,
     };
   }
+
+  //VERIFICAR CORREO
   async verifyEmailCode(email: string, code: string) {
     const user = await this.prisma.user.findUnique({ where: { email } });
 
@@ -93,6 +93,7 @@ export class AuthService {
     return { message: "Correo verificado con éxito" };
   }
 
+  //REENVIAR CORREO
   async resendVerificationEmail(email: string) {
     const user = await this.prisma.user.findUnique({ where: { email } });
 
@@ -119,6 +120,7 @@ export class AuthService {
     };
   }
 
+  //INICIAR SESIÓN
   async login(dto: LoginAuthDto) {
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
@@ -147,13 +149,16 @@ export class AuthService {
     const payload = {
       sub: user.id,
       email: user.email,
-      sessionVersion: user.sessionVersion,
+      sessionVersion: user.sessionVersion + 1,
+      role: user.role,
     };
 
     const token = this.jwtService.sign(payload);
 
     return { token };
   }
+
+  //INICIAR SESIÓN CON GOOGLE
   async loginWithGoogle(idToken: string) {
     const decoded = await this.firebaseService.verifyToken(idToken);
     const { email, name } = decoded;
@@ -184,6 +189,7 @@ export class AuthService {
       sub: user.id,
       email: user.email,
       sessionVersion: user.sessionVersion,
+      role: user.role,
     };
     const token = this.jwtService.sign(payload);
 
@@ -193,6 +199,7 @@ export class AuthService {
     };
   }
 
+  //COMPLETAR REGISTRO CON GOOGLE
   async completeGoogleRegistration(
     userData: CompleteGoogleRegistrationDto,
     googleEmail: string
@@ -228,6 +235,7 @@ export class AuthService {
       sub: createdUser.id,
       email: createdUser.email,
       sessionVersion: createdUser.sessionVersion,
+      role: createdUser.role,
     };
     const token = this.jwtService.sign(payload);
 
@@ -237,6 +245,7 @@ export class AuthService {
     };
   }
 
+  //RECUPERAR CONTRASEÑA
   async requestPasswordReset(email: string) {
     const user = await this.prisma.user.findUnique({ where: { email: email } });
     if (!user) {
@@ -258,6 +267,8 @@ export class AuthService {
     };
   }
 
+  //VERIFICAR CODIGO DEL CORREO
+
   async verifyResetCode(email: string, code: string, dto: codeVerificationDto) {
     const user = await this.prisma.user.findUnique({ where: { email } });
 
@@ -278,6 +289,8 @@ export class AuthService {
 
     return { message: "Código válido" };
   }
+
+  //CAMBIAR CONTRASEÑA
   async resetPassword(dto: ResetPasswordDto) {
     const { email, code, newPassword } = dto;
 
@@ -316,9 +329,5 @@ export class AuthService {
     await this.prisma.user.update({ where: { email }, data: user });
 
     return { message: "La contraseña ha sido actualizada exitosamente" };
-  }
-
-  async getAll() {
-    return this.prisma.user.findMany();
   }
 }

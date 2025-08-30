@@ -13,30 +13,30 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
 model User {
-  id             Int        @id @default(autoincrement())
-  firstName      String
-  lastName       String
-  email          String     @unique
-  password       String?
-  role           Role
-  dni String
-  createdAt      DateTime   @default(now())
-  diagnosticTests DiagnosticTest[]
-  progress       Progress[]
-  interactions   Interaction[]
-  resetCode String?
+  id               Int              @id @default(autoincrement())
+  firstName        String
+  lastName         String
+  email            String           @unique
+  password         String?
+  role             Role
+  dni              String?
+  createdAt        DateTime         @default(now())
+  diagnosticTests  DiagnosticTest[]
+  progress         Progress[]
+  interactions     Interaction[]
+  studentModel     StudentModel?
+  resetCode        String?
   resetCodeExpires DateTime?
-  isEmailVerified Boolean @default(false)
-  sessionVersion Int @default(0)
+  isEmailVerified  Boolean          @default(false)
+  sessionVersion   Int              @default(0)
 }
 
 model Career {
-  id          Int        @id @default(autoincrement())
-  name        String
-  description String?
-  units       Unit[]
+  id              Int              @id @default(autoincrement())
+  name            String
+  description     String?
+  units           Unit[]
   diagnosticTests DiagnosticTest[]
 }
 
@@ -51,19 +51,20 @@ model Unit {
 }
 
 model Topic {
-  id        Int      @id @default(autoincrement())
-  name      String
+  id          Int       @id @default(autoincrement())
+  name        String
   description String?
-  order     Int
-  unit      Unit     @relation(fields: [unitId], references: [id], onDelete: Cascade)
-  unitId    Int
-  progress  Progress[]
+  order       Int
+  unit        Unit      @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  unitId      Int
+  progress    Progress[]
 }
 
 model DiagnosticTest {
   id        Int      @id @default(autoincrement())
   score     Int
   level     Level
+  type      TestType @default(diagnostic)  
   date      DateTime @default(now())
   student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
   studentId Int
@@ -82,12 +83,27 @@ model Progress {
 }
 
 model Interaction {
-  id        Int      @id @default(autoincrement())
-  question  String
-  answer    String
-  date      DateTime @default(now())
-  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  studentId Int
+  id         Int      @id @default(autoincrement())
+  question   String
+  answer     String
+  date       DateTime @default(now())
+  student    User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId  Int
+
+  // 🔹 Snapshot de probabilidades al momento de la interacción
+  levelLow    Float   @default(0.0)
+  levelMedium Float   @default(0.0)
+  levelHigh   Float   @default(0.0)
+}
+
+model StudentModel {
+  id         Int      @id @default(autoincrement())
+  student    User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId  Int      @unique
+  levelLow   Float    @default(0.0)
+  levelMedium Float   @default(0.0)
+  levelHigh  Float    @default(0.0)
+  lastUpdate DateTime @default(now())
 }
 
 enum Role {
@@ -106,4 +122,10 @@ enum Status {
   pending
   in_progress
   completed
+}
+
+enum TestType {
+  diagnostic
+  theoretical
+  practical
 }

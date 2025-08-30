@@ -11,10 +11,10 @@ import { Role } from "../../../generated/prisma/client";
 export class RegisterAuthDto {
   @IsNotEmpty({ message: "El nombre es obligatorio." })
   @IsString({ message: "El nombre debe ser una cadena de texto." })
-  firstname: string;
+  firstName: string;
   @IsNotEmpty({ message: "El apellido es obligatorio." })
   @IsString({ message: "El nombre debe ser una cadena de texto." })
-  lastname: string;
+  lastName: string;
   @IsNotEmpty({ message: "El correo es obligatorio." })
   @IsEmail({}, { message: "Debe ingresar un correo electrónico válido." })
   email: string;

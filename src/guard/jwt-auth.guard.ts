@@ -23,14 +23,16 @@ export class JwtAuthGuard implements CanActivate {
     try {
       const payload = this.jwtService.verify(token);
 
-      const user = await this.prisma.user.findUnique(payload.sub);
+      const user = await this.prisma.user.findUnique({
+        where: { id: payload.sub },
+      });
 
       if (!user) {
         console.log("usu no encontrado");
         throw new UnauthorizedException("Usuario no encontrado");
       }
 
-      if (user.sessionVersion !== payload.sessionVersion) {
+      if (user.sessionVersion > payload.sessionVersion) {
         console.log("sesion invalida");
         throw new UnauthorizedException(
           "Sesión inválida, por favor inicie sesión nuevamente"

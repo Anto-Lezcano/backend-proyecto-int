@@ -23,5 +23,3 @@ export class ForgotPasswordDto {
   })
   password: string;
 }
-
-export class UpdatePasswordDto extends OmitType(ForgotPasswordDto, ["email"]) {}

@@ -5,8 +5,8 @@ import { Role } from "../../../generated/prisma/client";
 
 export class CompleteGoogleRegistrationDto extends OmitType(RegisterAuthDto, [
   "password",
-  "firstname",
-  "lastname",
+  "firstName",
+  "lastName",
 ] as const) {
   @IsNotEmpty({ message: "El rol es obligatorio." })
   @IsEnum(Role, {
