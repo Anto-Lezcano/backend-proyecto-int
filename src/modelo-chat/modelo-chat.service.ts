@@ -3,19 +3,17 @@ import { ChatDto } from "./dto/chat-dto";
 @Injectable()
 export class ModeloChatService {
   async chatear(dto: ChatDto) {
-    const response = await fetch("http://localhost:11434/api/generate", {
+    const response = await fetch("http://127.0.0.1:8000/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "gpt-oss:20b",
-        prompt: dto.message,
-        options: {
-          temperature: 0.7,
-        },
+        question: dto.question,
+        student_id: dto.student_id,
+        unit: dto.unit,
       }),
     });
 
     const data = await response.json();
-    return { reply: data.response };
+    return { reply: data.answer };
   }
 }

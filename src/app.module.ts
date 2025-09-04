@@ -7,6 +7,8 @@ import { JwtGlobalModule } from "./common/jwt/jwt.module";
 import { ModeloChatModule } from './modelo-chat/modelo-chat.module';
 import { TeachersModule } from './teachers/teachers.module';
 import { AdminModule } from './admin/admin.module';
+import { UnitsModule } from './units/units.module';
+import { CareerModule } from './career/career.module';
 @Module({
   imports: [
     FirebaseModule,
@@ -17,6 +19,8 @@ import { AdminModule } from './admin/admin.module';
     ModeloChatModule,
     TeachersModule,
     AdminModule,
+    UnitsModule,
+    CareerModule,
   ],
 })
 export class AppModule {}

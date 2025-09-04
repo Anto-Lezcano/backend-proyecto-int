@@ -41,7 +41,7 @@ export class JwtAuthGuard implements CanActivate {
 
       request["user"] = payload;
 
-      return true;
+      return payload;
     } catch (error) {
       console.error("Error al verificar token:", error.message);
       throw new UnauthorizedException("Token inválido o expirado");

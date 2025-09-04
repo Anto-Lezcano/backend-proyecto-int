@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import * as bcrypt from "bcrypt";
 import { NotFoundException } from "@nestjs/common";
@@ -20,18 +20,25 @@ export class AdminService {
 
   //CREAR PROFESOR O ADMIN
   async createUsers(dto: RegisterAuthDto) {
-    const existTeacher = await this.prisma.user.findUnique({
+    const existUser = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
       },
     });
 
-    if (existTeacher != null) {
+    if (existUser) {
       {
         throw new Error("El correo ingresado ya existe");
       }
     }
 
+    const allowedRoles = ["admin", "teacher"];
+
+    if (!allowedRoles.includes(dto.role)) {
+      throw new BadRequestException(
+        `El rol '${dto.role}' no es válido. Roles permitidos: ${allowedRoles.join(", ")}`
+      );
+    }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(dto.password, salt);
 

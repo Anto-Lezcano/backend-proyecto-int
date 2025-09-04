@@ -1,3 +1,9 @@
+import { IsString, IsNumber } from "class-validator";
 export class ChatDto {
-  message: string;
+  @IsString()
+  question: string;
+  @IsNumber()
+  student_id: number;
+  @IsString()
+  unit: string;
 }

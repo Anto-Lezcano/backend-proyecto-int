@@ -2,6 +2,7 @@ import {
   Controller,
   Post,
   Body,
+  Get,
   Res,
   UnauthorizedException,
 } from "@nestjs/common";
@@ -14,12 +15,19 @@ import { EmailService } from "src/common/email/email.service";
 import { Response } from "express";
 import { ResetPasswordDto } from "./dto/reset-password.dto";
 import { codeVerificationDto } from "./dto/code.verification.dto";
+import { UseGuards } from "@nestjs/common";
+import { JwtAuthGuard } from "src/guard/jwt-auth.guard";
 @Controller("auth")
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private mailService: EmailService
   ) {}
+
+  //VALIDAR TOKEN
+  @UseGuards(JwtAuthGuard)
+  @Get("protected-routes")
+  getProfile() {}
 
   //registro
 
