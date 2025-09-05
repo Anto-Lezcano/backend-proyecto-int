@@ -1,34 +1,43 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { UnitsService } from './units.service';
-import { CreateUnitDto } from './dto/create-unit.dto';
-import { UpdateUnitDto } from './dto/update-unit.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Put,
+} from "@nestjs/common";
+import { UnitsService } from "./units.service";
+import { CreateUnitDto } from "./dto/create-unit.dto";
+import { UpdateUnitDto } from "./dto/update-unit.dto";
 
-@Controller('units')
+@Controller("units")
 export class UnitsController {
   constructor(private readonly unitsService: UnitsService) {}
 
-  @Post()
-  create(@Body() createUnitDto: CreateUnitDto) {
-    return this.unitsService.create(createUnitDto);
+  //CREAR UNIDAD
+  @Post("create")
+  create(@Body() createDto: CreateUnitDto) {
+    return this.unitsService.createUnit(createDto);
   }
 
+  //BUSCAR TODAS LAS UNIDADES
   @Get()
   findAll() {
-    return this.unitsService.findAll();
+    return this.unitsService.findAllUnits();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.unitsService.findOne(+id);
+  //BUSCAR UNIDAD POR ORDEN
+
+  @Get(":order")
+  findOne(@Param("order") order: number) {
+    return this.unitsService.findOneforOrder(+order);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUnitDto: UpdateUnitDto) {
-    return this.unitsService.update(+id, updateUnitDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.unitsService.remove(+id);
+  @Put("update/:id")
+  update(@Param("id") id: number, @Body() updateUnitDto: UpdateUnitDto) {
+    console.log(id);
+    return this.unitsService.updateUnits(+id, updateUnitDto);
   }
 }

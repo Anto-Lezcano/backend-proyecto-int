@@ -4,11 +4,12 @@ import { PrismaModule } from "./prisma/prisma.module";
 import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
 import { JwtGlobalModule } from "./common/jwt/jwt.module";
-import { ModeloChatModule } from './modelo-chat/modelo-chat.module';
-import { TeachersModule } from './teachers/teachers.module';
-import { AdminModule } from './admin/admin.module';
-import { UnitsModule } from './units/units.module';
-import { CareerModule } from './career/career.module';
+import { ModeloChatModule } from "./modelo-chat/modelo-chat.module";
+import { TeachersModule } from "./teachers/teachers.module";
+import { AdminModule } from "./admin/admin.module";
+import { UnitsModule } from "./units/units.module";
+import { CareerModule } from "./career/career.module";
+import { StudentsModule } from "./students/students.module";
 @Module({
   imports: [
     FirebaseModule,
@@ -21,6 +22,7 @@ import { CareerModule } from './career/career.module';
     AdminModule,
     UnitsModule,
     CareerModule,
+    StudentsModule,
   ],
 })
 export class AppModule {}

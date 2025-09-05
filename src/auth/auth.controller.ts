@@ -16,7 +16,7 @@ import { Response } from "express";
 import { ResetPasswordDto } from "./dto/reset-password.dto";
 import { codeVerificationDto } from "./dto/code.verification.dto";
 import { UseGuards } from "@nestjs/common";
-import { JwtAuthGuard } from "src/guard/jwt-auth.guard";
+import { JwtAuthGuard } from "src/common/guard/jwt-auth.guard";
 @Controller("auth")
 export class AuthController {
   constructor(

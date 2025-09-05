@@ -19,9 +19,6 @@ export class FirebaseAdminService implements OnModuleInit {
       const decodedToken = await admin.auth().verifyIdToken(idToken);
       return decodedToken;
     } catch (err) {
-      console.log(
-        "--------------------------------------- error----------------------------"
-      );
       console.log(err);
       console.error("Error al verificar el token Firebase:", err);
       throw err;

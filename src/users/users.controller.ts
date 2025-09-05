@@ -7,12 +7,13 @@ import {
   Delete,
   Post,
   Req,
+  Put,
 } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { UpdatePasswordDto } from "./dto/update-password-dto";
 import { UseGuards } from "@nestjs/common";
-import { JwtAuthGuard } from "src/guard/jwt-auth.guard";
+import { JwtAuthGuard } from "src/common/guard/jwt-auth.guard";
 
 @Controller("users")
 export class UsersController {
@@ -26,7 +27,7 @@ export class UsersController {
 
   //editar usuario
   @UseGuards(JwtAuthGuard)
-  @Patch("update/:id")
+  @Put("update/:id")
   update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.updateUser(+id, updateUserDto);
   }
@@ -41,7 +42,7 @@ export class UsersController {
   //EDITAR CONTRASEÑA
   @UseGuards(JwtAuthGuard)
   @Patch("update-password/:id")
-  updatePassword(@Param("id") id: number, @Body() updatePasswordDto: any) {
-    return this.usersService.updatePassword(+id, updatePasswordDto);
+  updatePassword(@Param("id") id: number, @Body() dto: UpdatePasswordDto) {
+    return this.usersService.updatePassword(+id, dto);
   }
 }

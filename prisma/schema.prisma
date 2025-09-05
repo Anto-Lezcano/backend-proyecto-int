@@ -20,7 +20,7 @@ model User {
   email            String           @unique
   password         String?
   role             Role
-  dni              String?
+  dni              String?          @unique
   createdAt        DateTime         @default(now())
   progress         Progress[]
   interactions     Interaction[]

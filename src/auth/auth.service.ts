@@ -148,7 +148,6 @@ export class AuthService {
 
     const payload = {
       sub: user.id,
-      email: user.email,
       sessionVersion: user.sessionVersion + 1,
       role: user.role,
     };
@@ -187,7 +186,6 @@ export class AuthService {
 
     const payload = {
       sub: user.id,
-      email: user.email,
       sessionVersion: user.sessionVersion,
       role: user.role,
     };
@@ -233,7 +231,6 @@ export class AuthService {
 
     const payload = {
       sub: createdUser.id,
-      email: createdUser.email,
       sessionVersion: createdUser.sessionVersion,
       role: createdUser.role,
     };
