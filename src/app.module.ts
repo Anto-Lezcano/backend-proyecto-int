@@ -10,6 +10,7 @@ import { AdminModule } from "./admin/admin.module";
 import { UnitsModule } from "./units/units.module";
 import { CareerModule } from "./career/career.module";
 import { StudentsModule } from "./students/students.module";
+import { TopicModule } from './topic/topic.module';
 @Module({
   imports: [
     FirebaseModule,
@@ -23,6 +24,7 @@ import { StudentsModule } from "./students/students.module";
     UnitsModule,
     CareerModule,
     StudentsModule,
+    TopicModule,
   ],
 })
 export class AppModule {}
