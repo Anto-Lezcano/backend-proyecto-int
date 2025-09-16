@@ -12,12 +12,12 @@ export class UnitsService {
 
   // CREAR UNIDAD
   async createUnit(createDto: CreateUnitDto) {
-    const existCareer = this.prisma.career.findUnique({
-      where: { id: createDto.careerId },
+    const existUnit = await this.prisma.unit.findMany({
+      where: { order: createDto.order },
     });
 
-    if (!existCareer) {
-      throw new BadRequestException("La carrera que desea asociar no existe");
+    if (existUnit.length > 0) {
+      throw new BadRequestException(`La unidad ${createDto.order} ya existe`);
     }
     const newUnit = await this.prisma.unit.create({ data: createDto });
 

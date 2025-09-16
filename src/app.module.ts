@@ -8,9 +8,10 @@ import { ModeloChatModule } from "./modelo-chat/modelo-chat.module";
 import { TeachersModule } from "./teachers/teachers.module";
 import { AdminModule } from "./admin/admin.module";
 import { UnitsModule } from "./units/units.module";
-import { CareerModule } from "./career/career.module";
 import { StudentsModule } from "./students/students.module";
-import { TopicModule } from './topic/topic.module';
+import { TopicModule } from "./topic/topic.module";
+import { DocumentsModule } from "./documents/documents.module";
+import { CloudinaryModule } from "./cloudinary/cloudinary.module";
 @Module({
   imports: [
     FirebaseModule,
@@ -22,9 +23,10 @@ import { TopicModule } from './topic/topic.module';
     TeachersModule,
     AdminModule,
     UnitsModule,
-    CareerModule,
     StudentsModule,
     TopicModule,
+    DocumentsModule,
+    CloudinaryModule,
   ],
 })
 export class AppModule {}

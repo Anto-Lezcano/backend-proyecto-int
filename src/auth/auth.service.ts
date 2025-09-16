@@ -30,10 +30,18 @@ export class AuthService {
       where: { email: registerDto.email },
     });
 
+    const existDni = await this.prisma.user.findUnique({
+      where: { dni: registerDto.dni },
+    });
+
     if (existUsu) {
       throw new UnauthorizedException(
         "La dirección de correo electrónica ya se encuentra registrada."
       );
+    }
+
+    if (existDni) {
+      throw new UnauthorizedException("El DNI ya se encuentra registrado.");
     }
 
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
@@ -265,7 +273,6 @@ export class AuthService {
   }
 
   //VERIFICAR CODIGO DEL CORREO
-
   async verifyResetCode(email: string, code: string, dto: codeVerificationDto) {
     const user = await this.prisma.user.findUnique({ where: { email } });
 
